@@ -3,6 +3,11 @@ package com.roro.random.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+/*
+TO THINK ABOUT HOW TO MAKE THIS MORE DYNAMIC
+- if new fields are added in query, this should be automatically updated
+- currently, we have to add it here manually
+ */
 @Data
 public class PlacesResponse {
 
