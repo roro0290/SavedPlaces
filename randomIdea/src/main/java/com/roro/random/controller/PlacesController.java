@@ -1,14 +1,15 @@
 package com.roro.random.controller;
 
-import ch.qos.logback.core.status.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.service.OutboundService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 
@@ -41,8 +42,8 @@ public class PlacesController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/give/me/random")
-    public ResponseEntity<?> randomPlace() {
+    @GetMapping("/get/random")
+    public ResponseEntity<?> getRandomPlace() {
 
         return ResponseEntity.ok("");
     }

@@ -25,6 +25,9 @@ public class OutboundService {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    RepoService repoService;
+
     /*
     CHECK getForObject method vs exchange method
     check response class structure and create something for it?
@@ -54,8 +57,12 @@ public class OutboundService {
             throw new FailedStatusException("request failed: " + status);
         }
 
-
+        saveToDb(candidate);
         return candidate.getPlaceName();
+    }
+
+    void saveToDb(PlacesResponse.Candidate candidate) {
+        repoService.save(candidate);
     }
 
 }

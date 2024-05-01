@@ -2,6 +2,8 @@ package com.roro.random.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /*
 TO THINK ABOUT HOW TO MAKE THIS MORE DYNAMIC
@@ -19,7 +21,11 @@ public class PlacesResponse {
     private ResponseStatus status;
 
     @Data
+    @Document
     public static class Candidate {
+
+        @Id
+        public String id;
 
         @JsonProperty("formatted_address")
         private String formattedAddress;
