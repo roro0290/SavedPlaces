@@ -1,9 +1,16 @@
 package com.roro.random.controller;
 
+import ch.qos.logback.core.status.Status;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.roro.random.exceptions.FailedStatusException;
+import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.service.OutboundService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 
 @RestController
 public class PlacesController {
@@ -20,7 +27,16 @@ public class PlacesController {
     @PostMapping("/add/location")
     public ResponseEntity<?> addLocation(@RequestParam String name) {
 
-        String result = outboundService.sendRequest(name);
+        String result;
+        try {
+            result = outboundService.sendRequest(name);
+        } catch (NoCandidatesException e) {
+            return ResponseEntity.status(HTTP_NO_CONTENT).body(e.getMessage());
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
+        } catch (FailedStatusException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
         return ResponseEntity.ok(result);
     }

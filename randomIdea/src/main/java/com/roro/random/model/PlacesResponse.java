@@ -13,7 +13,10 @@ public class PlacesResponse {
 
     private Candidate[] candidates;
 
-    private String status;
+    @JsonProperty("error_message")
+    private String errorMessage;
+
+    private ResponseStatus status;
 
     @Data
     public static class Candidate {
