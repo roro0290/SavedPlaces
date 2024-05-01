@@ -1,7 +1,3 @@
-Certainly! Here's a draft for the GitHub README.md for your project:
-
----
-
 # SavedPlaces
 
 An API that provides random places to visit by utilizing the Google Places API to fetch diverse locations and MongoDB to store them.
