@@ -24,12 +24,10 @@ public class PlacesResponse {
     @Document
     public static class Candidate {
 
-        @Id
-        public String id;
-
         @JsonProperty("formatted_address")
         private String formattedAddress;
 
+        @Id
         @JsonProperty("name")
         private String placeName;
 

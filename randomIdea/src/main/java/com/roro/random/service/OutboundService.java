@@ -61,6 +61,9 @@ public class OutboundService {
         return candidate.getPlaceName();
     }
 
+    /*
+    save the candidate object to MongoDB
+     */
     void saveToDb(PlacesResponse.Candidate candidate) {
         repoService.save(candidate);
     }
