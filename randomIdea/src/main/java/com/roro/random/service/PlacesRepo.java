@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface RepoService extends MongoRepository<PlacesResponse.Candidate, String> {
+public interface PlacesRepo extends MongoRepository<PlacesResponse.Candidate, String> {
 }

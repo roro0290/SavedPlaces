@@ -26,7 +26,7 @@ public class OutboundService {
     ObjectMapper objectMapper;
 
     @Autowired
-    RepoService repoService;
+    PlacesRepo placesRepo;
 
     /*
     CHECK getForObject method vs exchange method
@@ -65,7 +65,7 @@ public class OutboundService {
     save the candidate object to MongoDB
      */
     void saveToDb(PlacesResponse.Candidate candidate) {
-        repoService.save(candidate);
+        placesRepo.save(candidate);
     }
 
 }
