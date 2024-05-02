@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.SampleOperation;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CustomPlaceRepositoryImpl implements CustomPlaceRepository {
 
     @Autowired
