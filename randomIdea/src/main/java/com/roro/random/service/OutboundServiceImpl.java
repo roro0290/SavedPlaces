@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 
+import static com.roro.random.constants.ExceptionMessages.NO_CANDIDATES_FOUND;
+
 @Service
 public class OutboundServiceImpl implements OutboundService {
 
@@ -53,7 +55,7 @@ public class OutboundServiceImpl implements OutboundService {
         if (status.equals(ResponseStatus.OK)) {
             candidate = Arrays.stream(response.getCandidates())
                     .findFirst()
-                    .orElseThrow(() -> new NoCandidatesException("no candidates found"));
+                    .orElseThrow(() -> new NoCandidatesException(NO_CANDIDATES_FOUND));
         } else {
             throw new FailedStatusException("request failed: " + status);
         }
