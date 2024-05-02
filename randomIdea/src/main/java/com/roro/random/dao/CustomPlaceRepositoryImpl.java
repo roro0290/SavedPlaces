@@ -1,4 +1,4 @@
-package com.roro.random.dataaccess;
+package com.roro.random.dao;
 
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;
@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.aggregation.SampleOperation;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.roro.random.constants.ExceptionMessages.NO_CANDIDATES_IN_DB;
 
 @Service
 public class CustomPlaceRepositoryImpl implements CustomPlaceRepository {
@@ -30,7 +32,7 @@ public class CustomPlaceRepositoryImpl implements CustomPlaceRepository {
 
 
         if (result.isEmpty()) {
-            throw new NoCandidatesException("no candidates found in DB");
+            throw new NoCandidatesException(NO_CANDIDATES_IN_DB);
         }
 
         // Ensure there's at least one result

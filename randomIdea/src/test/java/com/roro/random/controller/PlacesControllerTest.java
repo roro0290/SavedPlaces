@@ -1,7 +1,9 @@
 package com.roro.random.controller;
 
-import com.roro.random.dataaccess.CustomPlaceRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.roro.random.dao.CustomPlaceRepository;
 import com.roro.random.exceptions.NoCandidatesException;
+import com.roro.random.model.PlacesResponse;
 import com.roro.random.service.OutboundService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static com.roro.random.constants.ExceptionMessages.NO_CANDIDATES_FOUND;
+import static com.roro.random.constants.ExceptionMessages.NO_CANDIDATES_IN_DB;
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlacesController.class)
 public class PlacesControllerTest {
@@ -28,27 +33,48 @@ public class PlacesControllerTest {
     @MockBean
     CustomPlaceRepository customPlaceRepository;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @Test
     public void addLocation_success() throws Exception {
         String result = "hoppers";
         when(outboundService.sendRequest("hopper")).thenReturn(result);
         mockMvc.perform(post("/add/location").queryParam("name", "hopper"))
-                .andExpect(content().string(result));
+                .andExpect(content().string(result))
+                .andExpect(status().is(200));
     }
 
     @Test
     public void addLocation_fail_missingQueryParam() throws Exception {
         mockMvc.perform(post("/add/location"))
-                .andExpect(MockMvcResultMatchers.status().is(400));
+                .andExpect(status().is(400));
     }
 
     @Test
     public void addLocation_fail_NoCandidatesException() throws Exception {
         when(outboundService.sendRequest("hopper")).thenThrow(new NoCandidatesException(NO_CANDIDATES_FOUND));
-        mockMvc.perform(post("/add/location").queryParam("name","hopper"))
-                .andExpect(MockMvcResultMatchers.status().is(HTTP_NO_CONTENT))
+        mockMvc.perform(post("/add/location").queryParam("name", "hopper"))
+                .andExpect(status().is(HTTP_NO_CONTENT))
                 .andExpect(content().string(NO_CANDIDATES_FOUND));
     }
 
+    @Test
+    public void getRandomPlace_success() throws Exception {
+        PlacesResponse.Candidate c = new PlacesResponse.Candidate();
+        c.setPlaceName("hoppers");
+        when(customPlaceRepository.getRandomPlace()).thenReturn(c);
+        mockMvc.perform(get("/get/random"))
+                .andExpect(MockMvcResultMatchers.content().string(objectMapper.writeValueAsString(c)))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void getRandomPlace_fail_noCandidates() throws Exception {
+        when(customPlaceRepository.getRandomPlace()).thenThrow(new NoCandidatesException(NO_CANDIDATES_IN_DB));
+        mockMvc.perform(get("/get/random"))
+                .andExpect(status().is(HTTP_NO_CONTENT))
+                .andExpect(content().string(NO_CANDIDATES_IN_DB));
+    }
 
 }
