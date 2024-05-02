@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.SampleOperation;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
-@Service
-public class RandomGeneratorImpl implements RandomGenerator {
+public class CustomPlaceRepositoryImpl implements CustomPlaceRepository {
 
     @Autowired
     MongoTemplate mongoTemplate;
@@ -22,8 +19,7 @@ public class RandomGeneratorImpl implements RandomGenerator {
     String collectionName;
 
     @Override
-    public PlacesResponse.Candidate getRandomPlaceFromDB() throws NoCandidatesException {
-
+    public PlacesResponse.Candidate getRandomPlace() throws NoCandidatesException {
         SampleOperation so = Aggregation.sample(1);
         Aggregation agg = Aggregation.newAggregation(so);
 
@@ -31,7 +27,7 @@ public class RandomGeneratorImpl implements RandomGenerator {
                 .getMappedResults();
 
 
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             throw new NoCandidatesException("no candidates found in DB");
         }
 

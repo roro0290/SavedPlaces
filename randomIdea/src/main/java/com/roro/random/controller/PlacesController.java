@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;
+import com.roro.random.service.CustomPlaceRepository;
 import com.roro.random.service.OutboundService;
-import com.roro.random.service.RandomGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class PlacesController {
     OutboundService outboundService;
 
     @Autowired
-    RandomGenerator randomGenerator;
+    CustomPlaceRepository customPlaceRepository;
 
     /*
     1. To take in the name of the place
@@ -53,7 +53,7 @@ public class PlacesController {
         PlacesResponse.Candidate candidate = null;
 
         try {
-            candidate = randomGenerator.getRandomPlaceFromDB();
+            candidate = customPlaceRepository.getRandomPlace();
         } catch (NoCandidatesException e) {
             return ResponseEntity.status(HTTP_NO_CONTENT).body(e.getMessage());
         }
