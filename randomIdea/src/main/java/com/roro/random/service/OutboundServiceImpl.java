@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 import static com.roro.random.constants.ExceptionMessages.NO_CANDIDATES_FOUND;
+import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_URL;
 
 @Service
 public class OutboundServiceImpl implements OutboundService {
@@ -37,8 +38,7 @@ public class OutboundServiceImpl implements OutboundService {
     %2C in the URL is for encoding
      */
     public String sendRequest(String location) throws NoCandidatesException, JsonProcessingException, FailedStatusException {
-        String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address,name,rating,opening_hours&input={location}&inputtype=textquery&key={apiKey}";
-        return processResponse(restTemplate.getForObject(url, String.class, location, apiKey));
+        return processResponse(restTemplate.getForObject(FIND_PLACE_FROM_TEXT_URL, String.class, location, apiKey));
     }
 
 
