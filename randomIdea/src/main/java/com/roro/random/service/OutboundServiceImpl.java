@@ -2,6 +2,7 @@ package com.roro.random.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.roro.random.dataaccess.PlacesRepository;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;

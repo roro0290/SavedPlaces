@@ -1,4 +1,4 @@
-package com.roro.random.service;
+package com.roro.random.dataaccess;
 
 import com.roro.random.model.PlacesResponse;
 import org.springframework.data.mongodb.repository.MongoRepository;

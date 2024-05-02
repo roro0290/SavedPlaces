@@ -1,16 +1,13 @@
 package com.roro.random.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.roro.random.exceptions.FailedStatusException;
-import com.roro.random.exceptions.NoCandidatesException;
-import com.roro.random.service.CustomPlaceRepository;
+import com.roro.random.dataaccess.CustomPlaceRepository;
 import com.roro.random.service.OutboundService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,11 +22,20 @@ public class PlacesControllerTest {
     @MockBean
     OutboundService outboundService;
 
+    @MockBean
+    CustomPlaceRepository customPlaceRepository;
+
     @Test
-    public void addLocation_returnSuccess() throws Exception {
+    public void addLocation_success() throws Exception {
         String result = "hoppers";
         when(outboundService.sendRequest("hopper")).thenReturn(result);
         mockMvc.perform(post("/add/location").queryParam("name", "hopper"))
                 .andExpect(content().string(result));
+    }
+
+    @Test
+    public void addLocation_fail_missingQueryParam() throws Exception {
+        mockMvc.perform(post("/add/location"))
+                .andExpect(MockMvcResultMatchers.status().is(400));
     }
 }
