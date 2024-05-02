@@ -1,0 +1,15 @@
+{
+   "candidates" :
+   [
+      {
+         "formatted_address" : "Peninsular Retail Park, Bugsby's Way, London SE7 7TZ, United Kingdom",
+         "name" : "McDonald's",
+         "opening_hours" :
+         {
+            "open_now" : true
+         },
+         "rating" : 3.2
+      }
+   ],
+   "status" : "OK"
+}

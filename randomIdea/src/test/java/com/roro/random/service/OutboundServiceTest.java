@@ -1,7 +1,13 @@
 package com.roro.random.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roro.random.TestUtil;
 import com.roro.random.dao.PlacesRepository;
+import com.roro.random.exceptions.FailedStatusException;
+import com.roro.random.exceptions.NoCandidatesException;
+import com.roro.random.model.PlacesResponse;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,9 +16,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_URL;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class OutboundServiceTest {
@@ -30,10 +37,20 @@ public class OutboundServiceTest {
     private String apiKey;
 
     @Test
-    public void sendRequest_success_test() throws IOException {
-        String location = "hoppers";
+    public void sendRequest_success_test() throws IOException, NoCandidatesException, FailedStatusException {
+        String location = "McDonald";
+        String resp = TestUtil.readJsonFromFile("src/test/resources/sampleSuccessRes.txt");
         when(restTemplate.getForObject(FIND_PLACE_FROM_TEXT_URL, String.class, location, apiKey))
-                .thenReturn(TestUtil.readJsonFromFile("src/test/resources/res1.txt"));
+                .thenReturn(resp);
+
+        OutboundServiceImpl impl = mock(OutboundServiceImpl.class);
+        doNothing().when(impl).savePlaceToDb(candidate_McDonald(resp));
+        Assertions.assertEquals("McDonald's",outboundService.sendRequest(location));
+    }
+
+    PlacesResponse.Candidate candidate_McDonald(String response) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return Arrays.stream(objectMapper.readValue(response, PlacesResponse.class).getCandidates()).findFirst().get();
     }
 
 }
