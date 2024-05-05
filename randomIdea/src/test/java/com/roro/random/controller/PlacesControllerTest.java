@@ -1,7 +1,7 @@
 package com.roro.random.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.roro.random.dao.CustomPlaceRepository;
+import com.roro.random.db.CustomPlaceRepository;
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;
 import com.roro.random.service.OutboundService;

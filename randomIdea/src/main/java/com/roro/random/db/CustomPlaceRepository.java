@@ -1,4 +1,4 @@
-package com.roro.random.dao;
+package com.roro.random.db;
 
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;
