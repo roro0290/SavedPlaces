@@ -6,6 +6,7 @@ import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
@@ -33,7 +33,7 @@ public class CustomPlaceRepoTest {
     }
 
     @DynamicPropertySource
-    public static void mongoDbProperties(DynamicPropertyRegistry registry){
+    public static void setProperties(DynamicPropertyRegistry registry) {
         ContainerBase.mongoDbProperties(registry);
     }
 
@@ -49,6 +49,7 @@ public class CustomPlaceRepoTest {
     2. retrieve place from DB
     */
     @Test
+    @Order(2)
     public void getRandomPlace_success_test() throws IOException, NoCandidatesException {
         String resp = TestUtil.readJsonFromFile("src/test/resources/sampleSuccessRes.txt");
         placesRepository.save(TestUtil.candidate_McDonald(resp));
@@ -57,5 +58,10 @@ public class CustomPlaceRepoTest {
         assertEquals(c.getPlaceName(), "McDonald's");
     }
 
+    @Test
+    @Order(1)
+    public void getRandomPlace_noEntryInDb_failure_test() {
+        assertThrows(NoCandidatesException.class, () -> customPlaceRepository.getRandomPlace());
+    }
 
 }
