@@ -7,14 +7,19 @@ import com.roro.random.dao.PlacesRepository;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.PlacesResponse;
-import org.junit.internal.runners.statements.Fail;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.web.client.RestTemplate;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -23,6 +28,8 @@ import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@Testcontainers
+@ActiveProfiles("test")
 public class OutboundServiceTest {
 
     @Autowired
@@ -36,6 +43,22 @@ public class OutboundServiceTest {
 
     @Value("${google.api.key}")
     private String apiKey;
+
+    public static GenericContainer<?> mongoDbContainer
+            = new GenericContainer("mongo:4.4.29")
+            .withExposedPorts(27017);
+
+    @DynamicPropertySource
+    static void mongoDbProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.host", mongoDbContainer::getHost);
+        registry.add("spring.data.mongodb.port", mongoDbContainer::getFirstMappedPort);
+        registry.add("spring.data.mongodb.database", () -> "placesDb");
+    }
+
+    @BeforeAll
+    public static void startContainer() {
+        mongoDbContainer.start();
+    }
 
     @Test
     public void sendRequest_success_test() throws IOException, NoCandidatesException, FailedStatusException {
