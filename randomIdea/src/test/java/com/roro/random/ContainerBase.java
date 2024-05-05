@@ -21,7 +21,7 @@ public class ContainerBase {
         mongoDbContainer.start();
     }
 
-    public static void stopContainer(){
+    public static void stopContainer() {
         mongoDbContainer.stop();
     }
 

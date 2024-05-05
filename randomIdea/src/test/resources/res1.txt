@@ -1,8 +1,0 @@
-{
-  "rating": "3.3",
-  "formatted_address": "A12, Feering, Colchester CO5 9EL, United Kingdom",
-  "name": "Burger King",
-  "opening_hours": {
-    "open_now": false
-  }
-}
