@@ -37,7 +37,7 @@ public class PlacesControllerTest {
     ObjectMapper objectMapper;
 
     @Test
-    public void addLocation_success() throws Exception {
+    public void addLocation_success_test() throws Exception {
         String result = "hoppers";
         when(outboundService.sendRequest("hopper")).thenReturn(result);
         mockMvc.perform(post("/add/location").queryParam("name", "hopper"))
@@ -46,13 +46,13 @@ public class PlacesControllerTest {
     }
 
     @Test
-    public void addLocation_fail_missingQueryParam() throws Exception {
+    public void addLocation_fail_missingQueryParam_test() throws Exception {
         mockMvc.perform(post("/add/location"))
                 .andExpect(status().is(400));
     }
 
     @Test
-    public void addLocation_fail_NoCandidatesException() throws Exception {
+    public void addLocation_fail_NoCandidatesException_test() throws Exception {
         when(outboundService.sendRequest("hopper")).thenThrow(new NoCandidatesException(NO_CANDIDATES_FOUND));
         mockMvc.perform(post("/add/location").queryParam("name", "hopper"))
                 .andExpect(status().is(HTTP_NO_CONTENT))
@@ -60,7 +60,7 @@ public class PlacesControllerTest {
     }
 
     @Test
-    public void getRandomPlace_success() throws Exception {
+    public void getRandomPlace_success_test() throws Exception {
         PlacesResponse.Candidate c = new PlacesResponse.Candidate();
         c.setPlaceName("hoppers");
         when(customPlaceRepository.getRandomPlace()).thenReturn(c);
@@ -70,7 +70,7 @@ public class PlacesControllerTest {
     }
 
     @Test
-    public void getRandomPlace_fail_noCandidates() throws Exception {
+    public void getRandomPlace_fail_noCandidates_test() throws Exception {
         when(customPlaceRepository.getRandomPlace()).thenThrow(new NoCandidatesException(NO_CANDIDATES_IN_DB));
         mockMvc.perform(get("/get/random"))
                 .andExpect(status().is(HTTP_NO_CONTENT))
