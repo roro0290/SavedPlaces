@@ -7,8 +7,10 @@ import com.roro.random.model.PlacesResponse;
 import com.roro.random.service.OutboundService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlacesController.class)
+@AutoConfigureRestDocs
 public class PlacesControllerTest {
 
     @Autowired
@@ -74,7 +77,8 @@ public class PlacesControllerTest {
         when(customPlaceRepository.getRandomPlace()).thenThrow(new NoCandidatesException(NO_CANDIDATES_IN_DB));
         mockMvc.perform(get("/get/random"))
                 .andExpect(status().is(HTTP_NO_CONTENT))
-                .andExpect(content().string(NO_CANDIDATES_IN_DB));
+                .andExpect(content().string(NO_CANDIDATES_IN_DB))
+                .andDo(MockMvcRestDocumentation.document("get-random-endpoint")); // RESPONSE CAN BE FOUND IN target -> generated-snippets folder
     }
 
 }

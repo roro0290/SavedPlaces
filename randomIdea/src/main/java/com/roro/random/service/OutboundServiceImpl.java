@@ -32,13 +32,19 @@ public class OutboundServiceImpl implements OutboundService {
     @Autowired
     PlacesRepository placesRepository;
 
+    @Value("${google.base.url}")
+    String googleBaseUrl;
+
+    @Value("${find.place.from.text}")
+    String findPlaceFromTextUrl;
+
     /*
     CHECK getForObject method vs exchange method
     check response class structure and create something for it?
     %2C in the URL is for encoding
      */
     public String sendRequest(String location) throws NoCandidatesException, JsonProcessingException, FailedStatusException {
-        return processResponse(restTemplate.getForObject(FIND_PLACE_FROM_TEXT_URL, String.class, location, apiKey));
+        return processResponse(restTemplate.getForObject(googleBaseUrl + findPlaceFromTextUrl, String.class, location, apiKey));
     }
 
 
