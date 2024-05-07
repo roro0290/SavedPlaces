@@ -3,7 +3,7 @@ package com.roro.random.db;
 import com.roro.random.ContainerBase;
 import com.roro.random.TestUtil;
 import com.roro.random.exceptions.NoCandidatesException;
-import com.roro.random.model.PlacesResponse;
+import com.roro.random.model.googleResponse.PlacesResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;

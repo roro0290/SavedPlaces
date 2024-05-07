@@ -3,7 +3,7 @@ package com.roro.random.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
-import com.roro.random.model.PlacesResponse;
+import com.roro.random.model.googleResponse.PlacesResponse;
 import com.roro.random.db.CustomPlaceRepository;
 import com.roro.random.service.OutboundService;
 import org.springframework.beans.factory.annotation.Autowired;

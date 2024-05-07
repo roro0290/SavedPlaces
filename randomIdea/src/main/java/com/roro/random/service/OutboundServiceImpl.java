@@ -6,7 +6,7 @@ import com.roro.random.db.PlacesRepository;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
 import com.roro.random.model.GoogleApiInfoMap;
-import com.roro.random.model.PlacesResponse;
+import com.roro.random.model.googleResponse.PlacesResponse;
 import com.roro.random.model.ResponseStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

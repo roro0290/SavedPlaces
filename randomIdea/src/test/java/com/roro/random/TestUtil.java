@@ -2,9 +2,8 @@ package com.roro.random;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.roro.random.model.PlacesResponse;
+import com.roro.random.model.googleResponse.PlacesResponse;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

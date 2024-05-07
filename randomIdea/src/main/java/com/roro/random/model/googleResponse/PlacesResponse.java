@@ -1,6 +1,7 @@
-package com.roro.random.model;
+package com.roro.random.model.googleResponse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.roro.random.model.ResponseStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

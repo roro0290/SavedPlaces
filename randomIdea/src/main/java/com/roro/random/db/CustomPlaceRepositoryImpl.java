@@ -1,7 +1,7 @@
 package com.roro.random.db;
 
 import com.roro.random.exceptions.NoCandidatesException;
-import com.roro.random.model.PlacesResponse;
+import com.roro.random.model.googleResponse.PlacesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
