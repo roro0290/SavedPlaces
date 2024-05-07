@@ -1,0 +1,14 @@
+googleApiInfoMap:
+  textSearch:
+    baseUrl: "https://maps.googleapis.com/maps/api/place"
+    endpoint: "/findplacefromtext"
+    output: "/json"
+    requiredParameters:
+      - "input={location}"
+      - "inputtype=textquery"
+      - "key={apiKey}"
+    fields:
+      - formatted_address
+      - name
+      - rating
+      - opening_hours

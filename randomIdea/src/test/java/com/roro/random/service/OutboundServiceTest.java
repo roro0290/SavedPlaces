@@ -1,13 +1,11 @@
 package com.roro.random.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roro.random.ContainerBase;
 import com.roro.random.TestUtil;
 import com.roro.random.db.PlacesRepository;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
-import com.roro.random.model.PlacesResponse;
+import com.roro.random.model.GoogleApiInfoMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,9 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
-import java.util.Arrays;
 
-import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_URL;
+import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_ENDPOINT;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -42,6 +39,9 @@ public class OutboundServiceTest {
 
     @Value("${google.api.key}")
     private String apiKey;
+
+    @Autowired
+    GoogleApiInfoMap googleApiInfoMap;
 
     @DynamicPropertySource
     static void mongoDbProperties(DynamicPropertyRegistry registry) {
@@ -62,7 +62,7 @@ public class OutboundServiceTest {
     public void sendRequest_success_test() throws IOException, NoCandidatesException, FailedStatusException {
         String location = "McDonald";
         String resp = TestUtil.readJsonFromFile("src/test/resources/sampleSuccessRes.txt");
-        when(restTemplate.getForObject(FIND_PLACE_FROM_TEXT_URL, String.class, location, apiKey))
+        when(restTemplate.getForObject(googleApiInfoMap.getGoogleUrl(FIND_PLACE_FROM_TEXT_ENDPOINT), String.class, location, apiKey))
                 .thenReturn(resp);
 
         OutboundServiceImpl impl = mock(OutboundServiceImpl.class);
@@ -77,7 +77,7 @@ public class OutboundServiceTest {
     public void sendRequest_fail_requestFailStatus_test() throws IOException {
         String location = "McDonald";
         String resp = TestUtil.readJsonFromFile("src/test/resources/failedStatusRes.txt");
-        when(restTemplate.getForObject(FIND_PLACE_FROM_TEXT_URL, String.class, location, apiKey))
+        when(restTemplate.getForObject(googleApiInfoMap.getGoogleUrl(FIND_PLACE_FROM_TEXT_ENDPOINT), String.class, location, apiKey))
                 .thenReturn(resp);
         Assertions.assertThrows(FailedStatusException.class, () -> outboundService.sendRequest(location));
     }
@@ -89,7 +89,7 @@ public class OutboundServiceTest {
     public void sendRequest_fail_noCandidatesInRes_test() throws IOException {
         String location = "McDonald";
         String resp = TestUtil.readJsonFromFile("src/test/resources/noCandidatesRes.txt");
-        when(restTemplate.getForObject(FIND_PLACE_FROM_TEXT_URL, String.class, location, apiKey))
+        when(restTemplate.getForObject(googleApiInfoMap.getGoogleUrl(FIND_PLACE_FROM_TEXT_ENDPOINT), String.class, location, apiKey))
                 .thenReturn(resp);
         Assertions.assertThrows(NoCandidatesException.class, () -> outboundService.sendRequest(location));
     }

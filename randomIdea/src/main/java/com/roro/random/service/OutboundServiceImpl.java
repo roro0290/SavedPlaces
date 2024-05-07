@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roro.random.db.PlacesRepository;
 import com.roro.random.exceptions.FailedStatusException;
 import com.roro.random.exceptions.NoCandidatesException;
+import com.roro.random.model.GoogleApiInfoMap;
 import com.roro.random.model.PlacesResponse;
 import com.roro.random.model.ResponseStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 import static com.roro.random.constants.ExceptionMessages.NO_CANDIDATES_FOUND;
-import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_URL;
+import static com.roro.random.constants.GoogleUrlConstants.FIND_PLACE_FROM_TEXT_ENDPOINT;
 
 @Service
 public class OutboundServiceImpl implements OutboundService {
@@ -32,11 +33,8 @@ public class OutboundServiceImpl implements OutboundService {
     @Autowired
     PlacesRepository placesRepository;
 
-    @Value("${google.base.url}")
-    String googleBaseUrl;
-
-    @Value("${find.place.from.text}")
-    String findPlaceFromTextUrl;
+    @Autowired
+    GoogleApiInfoMap googleApiInfoMap;
 
     /*
     CHECK getForObject method vs exchange method
@@ -44,7 +42,7 @@ public class OutboundServiceImpl implements OutboundService {
     %2C in the URL is for encoding
      */
     public String sendRequest(String location) throws NoCandidatesException, JsonProcessingException, FailedStatusException {
-        return processResponse(restTemplate.getForObject(googleBaseUrl + findPlaceFromTextUrl, String.class, location, apiKey));
+        return processResponse(restTemplate.getForObject(googleApiInfoMap.getGoogleUrl(FIND_PLACE_FROM_TEXT_ENDPOINT), String.class, location, apiKey));
     }
 
 

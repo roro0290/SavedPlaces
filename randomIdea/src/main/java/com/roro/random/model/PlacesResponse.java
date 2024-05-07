@@ -36,6 +36,9 @@ public class PlacesResponse {
 
         private String rating;
 
+        @JsonProperty("place_id")
+        private String placeId;
+
     }
 
     @Data
