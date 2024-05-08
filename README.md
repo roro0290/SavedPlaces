@@ -8,10 +8,12 @@ An API that provides random places to visit by utilizing the Google Places API t
 2. **RestTemplate Usage**: Utilize RestTemplate to make HTTP requests to the Google Places API.
 3. **JSON Response Processing**: Learn how to use Jackson ObjectMapper to parse JSON response objects.
 4. **Enum for Response Codes**: Implement an Enum for response codes and handle exceptions effectively.
-5. **Configuration Management**: Store variable names using configuration for better management.
+5. **Configuration Management**: Store variable names using YAML configuration files for better management
 6. **MongoDB Integration**: Store fetched location information in MongoDB for persistence.
 7. **Random Place Retrieval**: Retrieve a random entry from MongoDB and return it as a travel destination.
-8. **Comprehensive Testing**: Implement test cases to cover various scenarios including mocking out the Google API and MongoDB repository, as well as handling exception scenarios.
+8. **Mocking the Google API**: Use Wiremock to mock out Google API
+9. **Testing Controller Layer**: Use MockMvc to test just the controller layer
+10. **Docker Containers instead of MongoDB for Test Cases**: Use TestContainers to provide the MongoDB during test cases instead of connecting to the actual MongoDB
 
 ## Usage
 
